@@ -8,17 +8,19 @@ class ProductController extends Controller
 {
     public function index()
     {
+        $title = 'Магазин';
         $product = new Product();
-        $product->query("SELECT * FROM products LIMIT 5");
-        $rows = $product->getAllRows();
-        return view('index', ['products' => $rows]);
+        $products = $product->getAll(['limit'=>5]);
+        return view('index', compact('products', 'title'));
     }
 
     public function show()
     {
         $product = new Product();
-        $product->query("SELECT * FROM products WHERE id=?", $this->vars['id']);
-        $product->fetchOne();
-        return view('index', ['products' => $product]);
+        if ($product->get($this->vars['id'])) {
+            $title = $product->name;
+            return view('product', compact('product', 'title'));
+        }
+        return 'Товар не найден';
     }
 }

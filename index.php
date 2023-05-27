@@ -25,4 +25,5 @@ $_APP_ENV = new Env();
 
 // Роутинг
 Route::get('/', ProductController::class);
+Route::get('/products', ProductController::class);
 Route::get('/products/$id', ProductController::class, 'show');

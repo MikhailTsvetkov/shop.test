@@ -1,5 +1,6 @@
 {
     "require": {
-        "cijic/phpmorphy": "^0.3.3"
+        "cijic/phpmorphy": "^0.3.3",
+      "ext-pdo": "*"
     }
 }

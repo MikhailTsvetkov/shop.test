@@ -25,7 +25,9 @@ class View
 
         // Буферизация вывода
         ob_start();
+            include 'View' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . 'header.php';
             include $this->view;
+            include 'View' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . 'footer.php';
             $content = ob_get_contents() ?? '';
         ob_end_clean();
 

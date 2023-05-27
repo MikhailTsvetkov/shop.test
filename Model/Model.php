@@ -42,28 +42,28 @@ abstract class Model
     }
 
     // Выполнить пользовательский запрос
-    public function query(string $sql, string|array $options=[])
+    protected function query(string $sql, string|array $options=[])
     {
         $options = (is_array($options)) ? $options : [$options];
         $this->_getResult($sql, $options);
     }
 
     // Получить все записи
-    public function getAllRows()
+    protected function getAllRows()
     {
         if(empty($this->dataResult)) return false;
         return $this->dataResult;
     }
 
     // Получить одну запись
-    public function getOneRow()
+    protected function getOneRow()
     {
         if(empty($this->dataResult)) return false;
         return $this->dataResult[0];
     }
 
     // Извлечь из базы данных одну запись
-    public function fetchOne(): bool
+    protected function fetchOne(): bool
     {
         if(empty($this->dataResult)) return false;
         foreach($this->dataResult[0] as $key => $val){
@@ -89,10 +89,20 @@ abstract class Model
         return $rows;
     }
 
-    private function fieldsTable(): array
+    // Обработка параметров запроса
+    protected function getQueryOptions(array $options): string
     {
-        return [
-            'id' => 'Id',
-        ];
+        $query_parameters = '';
+        foreach ($options as $k=>$v) {
+            switch (strtolower($k)) {
+                case 'limit':
+                    $query_parameters .= " LIMIT $v";
+                    break;
+                case 'offset':
+                    $query_parameters .= " OFFSET $v";
+                    break;
+            }
+        }
+        return $query_parameters;
     }
 }
