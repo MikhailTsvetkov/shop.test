@@ -72,7 +72,14 @@ abstract class Model
         if ($result && $output=$this->dbObj->get_inserted($this->table)) {
             return $output;
         }
-        return ['status'=>'error', 'errors'=>['Не удалось добавить отзыв. Попробуйте позже.']];
+        $this->errors = ['status'=>'error', 'errors'=>['Не удалось добавить отзыв. Попробуйте позже.']];
+        return false;
+    }
+
+    // Венуть массив с ошибками
+    public function get_errors()
+    {
+        return $this->errors;
     }
 
     // Выполнить пользовательский запрос

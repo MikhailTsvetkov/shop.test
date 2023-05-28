@@ -1,3 +1,4 @@
+<?php layout('header', $_VARS); ?>
 <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
     <?php
     foreach ($products as $product) {
@@ -21,3 +22,5 @@
     }
     ?>
 </div>
+<?php layout('footer', $_VARS); ?>
+

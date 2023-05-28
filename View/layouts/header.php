@@ -11,7 +11,7 @@
 
 
     <!-- Custom styles for this template -->
-    <link href="/assets/css/styles.css?<?=date('U')?>" rel="stylesheet">
+    <link href="/assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
 

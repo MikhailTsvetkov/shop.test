@@ -1,3 +1,4 @@
+<?php layout('header', $_VARS); ?>
 <div class="row row-cols-1 mb-3">
 
     <!--Карточка товара-->
@@ -12,14 +13,14 @@
                 <div class="ms-3 my-3 align-self-start"><?=$product->description?></div>
             </div>
             <div class="card-footer py-3 d-flex align-items-center justify-content-between flex-wrap">
-                <button class="btn btn-dark">Оставить отзыв</button>
+                <button class="btn btn-dark" id="testimonial-open">Оставить отзыв</button>
                 <h4 class="my-0 fw-normal text-end"><?=$product->price?> <span class="fw-bold text-secondary">&#8381;</span></h4>
             </div>
         </div>
     </div>
 
     <!--Форма для добавления отзыва-->
-    <form action="/testimonial/add" method="post" class="col">
+    <form action="/testimonial/add" method="post" class="col" style="display:none" id="testimonial-form">
         <input type="hidden" name="product_id" value="<?=$product->id?>">
         <div class="card mb-4 rounded-1 shadow-sm">
             <div class="card-header py-3">
@@ -41,7 +42,11 @@
                     <textarea class="form-control" id="message" name="message" rows="3" aria-describedby="textHelp" required></textarea>
                 </div>
             </div>
-            <div class="card-footer py-3 d-flex justify-content-end">
+            <div class="card-footer py-3 d-flex justify-content-between align-items-start">
+                <div>
+                    <ul class="text-danger" id="testimonial-errors">
+                    </ul>
+                </div>
                 <button type="submit" name="submit" class="btn btn-primary">Отправить отзыв</button>
             </div>
         </div>
@@ -50,12 +55,12 @@
     <!--Отзывы о товаре-->
     <div class="col testimonials">
         <div class="card text-dark">
-            <div class="card-header py-3">
+            <div class="card-header py-3" id="testimonials-header">
                 <h4 class="my-0 fw-normal text-start">Отзывы о товаре</h4>
             </div>
 
             <?php if (!$testimonials): ?>
-                <div class="card-body p-4">
+                <div class="card-body p-4" id="testimonial-empty">
                     Отзывов пока нет.
                 </div>
             <?php else:
@@ -83,3 +88,4 @@
 
 
 </div>
+<?php layout('footer', $_VARS); ?>

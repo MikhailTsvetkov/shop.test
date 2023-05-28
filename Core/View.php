@@ -20,14 +20,15 @@ class View
 
     public function get(): string
     {
+        // Устанавливаем массив переменных для слоев
+        $_VARS = $this->vars;
+
         // Импорт переменных в текущую таблицу символов
         extract($this->vars);
 
         // Буферизация вывода
         ob_start();
-            include 'View' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . 'header.php';
             include $this->view;
-            include 'View' . DIRECTORY_SEPARATOR . 'layouts' . DIRECTORY_SEPARATOR . 'footer.php';
             $content = ob_get_contents() ?? '';
         ob_end_clean();
 

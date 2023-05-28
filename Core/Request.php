@@ -41,9 +41,15 @@ class Request
         if ($validation->fails()) {
             // handling errors
             $errors = $validation->errors();
-            echo json_encode(array_merge(['status'=>'error'], ['errors'=>$errors->firstOfAll()]));
-            exit();
+            $this->validate_errors = array_merge(['status'=>'error'], ['errors'=>$errors->firstOfAll()]);
+            return false;
         }
+        return true;
+    }
+
+
+    public function validate_errors() {
+        return $this->validate_errors;
     }
 
     // Очистка свойств объекта перед повторным вызовом
@@ -60,7 +66,7 @@ class Request
     {
         $this->_clearProperties();
         foreach ($method as $k=>$v) {
-            $this->{$k} = strip_tags($v);
+            $this->{$k} = nl2br(strip_tags($v));
         }
         $this->requestData = $method;
     }
