@@ -4,6 +4,7 @@
 * PDO Mysql
 * Composer для добавления библиотек phpmorphy и validation
 * Mysql 5.7 или выше
+* Модуль apache mod_rewrite
 
 ## Развертывание
 

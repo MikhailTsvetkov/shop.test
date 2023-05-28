@@ -65,15 +65,16 @@ abstract class Model
         // Получаем список параметров для строки запроса
         $queryPlace = ':'.str_replace(',', ',:', $queryFields);
 
-        $stmt = $this->db->prepare("INSERT INTO {$this->table} ($queryFields) VALUES ($queryPlace)");
-        $result = $stmt->execute($fields);
-
-        // Получаем добавленные данные
-        if ($result && $output=$this->dbObj->get_inserted($this->table)) {
-            return $output;
+        try {
+            $stmt = $this->db->prepare("INSERT INTO {$this->table} ($queryFields) VALUES ($queryPlace)");
+            $stmt->execute($fields);
+            // Получаем добавленные данные
+            $output=$this->dbObj->get_inserted($this->table);
+        } catch (\Exception $e) {
+            $this->errors = ['status'=>'error', 'errors'=>['Не удалось добавить отзыв. Попробуйте позже.']];
+            return false;
         }
-        $this->errors = ['status'=>'error', 'errors'=>['Не удалось добавить отзыв. Попробуйте позже.']];
-        return false;
+        return $output;
     }
 
     // Венуть массив с ошибками
