@@ -15,7 +15,7 @@ class Product extends Model
     // Получение товара
     public function get(int $id)
     {
-        $this->query("SELECT * FROM products WHERE id=?", $id);
+        $this->query("SELECT * FROM {$this->table} WHERE id=?", $id);
         return $this->fetchOne();
     }
 
@@ -23,7 +23,8 @@ class Product extends Model
     public function getAll(array $options=[])
     {
         $query_parameters = $this->getQueryOptions($options);
-        $this->query("SELECT * FROM products $query_parameters");
-        return $this->getAllRows();
+        $this->query("SELECT * FROM {$this->table} $query_parameters");
+        $rows = $this->getAllRows();
+        return $rows ?: [];
     }
 }

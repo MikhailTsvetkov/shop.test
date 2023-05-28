@@ -14,13 +14,22 @@ class ProductController extends Controller
         return view('index', compact('products', 'title'));
     }
 
-    public function show()
+    public function show(int $id): string
     {
         $product = new Product();
-        if ($product->get($this->vars['id'])) {
+        if ($product->get($id)) {
             $title = $product->name;
-            return view('product', compact('product', 'title'));
+
+            $testimonial = new TestimonialController();
+            $testimonial->set_productId($id);
+            $testimonials = $testimonial->index();
+            return view('product', compact('product', 'testimonials', 'title'));
         }
         return 'Товар не найден';
+    }
+
+    function store()
+    {
+        // TODO: Implement store() method.
     }
 }

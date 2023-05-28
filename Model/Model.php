@@ -3,6 +3,7 @@
 namespace Model;
 
 use cijic\phpMorphy\Morphy;
+use Database\Database;
 use PDO;
 use PDOException;
 use ReflectionClass;
@@ -11,9 +12,12 @@ use ReflectionException;
 abstract class Model
 {
 
+    public array $fillable = [];
+
     protected PDO $db;
     protected string $table;
     private array $dataResult;
+    private Database $dbObj;
 
     /**
      * @throws ReflectionException
@@ -22,8 +26,8 @@ abstract class Model
     {
         // Объект PDO
         $dbClassName = 'Database\\'.ucfirst(strtolower(env('DB_CONNECTION')));
-        $dbClass = new $dbClassName;
-        $this->db = $dbClass->get();
+        $this->dbObj = new $dbClassName;
+        $this->db = $this->dbObj->get();
 
         // Имя таблицы
         $reflect = new ReflectionClass($this);
@@ -39,6 +43,36 @@ abstract class Model
     public function getTableName(): string
     {
         return $this->table;
+    }
+
+    // Получить список полей для вставки
+    protected function fieldsTable(array $fields): array
+    {
+        // Получаем поля, которые нужно записать в бд
+        return array_intersect_key($fields, array_flip($this->fillable));
+    }
+
+
+    // Запись в базу данных
+    public function create(array $fields)
+    {
+        // Получаем массив валидных полей
+        $fields = $this->fieldsTable($fields);
+
+        // Получаем строку, содержащую список полей
+        $queryFields = implode(',', array_flip($fields));
+
+        // Получаем список параметров для строки запроса
+        $queryPlace = ':'.str_replace(',', ',:', $queryFields);
+
+        $stmt = $this->db->prepare("INSERT INTO {$this->table} ($queryFields) VALUES ($queryPlace)");
+        $result = $stmt->execute($fields);
+
+        // Получаем добавленные данные
+        if ($result && $output=$this->dbObj->get_inserted($this->table)) {
+            return $output;
+        }
+        return ['status'=>'error', 'errors'=>['Не удалось добавить отзыв. Попробуйте позже.']];
     }
 
     // Выполнить пользовательский запрос
@@ -73,7 +107,7 @@ abstract class Model
     }
 
     // Выполнение запроса к базе данных
-    private function _getResult(string $sql, string|array $options)
+    private function _getResult(string $sql, string|array $options=[])
     {
         try {
             $db = $this->db;
@@ -92,17 +126,23 @@ abstract class Model
     // Обработка параметров запроса
     protected function getQueryOptions(array $options): string
     {
-        $query_parameters = '';
+        $query_parameters = [];
         foreach ($options as $k=>$v) {
             switch (strtolower($k)) {
+                case 'orderby':
+                    $direction = strtoupper($v[1]);
+                    $direction = ($direction=='DESC') ? $direction : 'ASC';
+                    $query_parameters[0] = " ORDER BY {$v[0]} $direction";
+                    break;
                 case 'limit':
-                    $query_parameters .= " LIMIT $v";
+                    $query_parameters[1] = " LIMIT $v";
                     break;
                 case 'offset':
-                    $query_parameters .= " OFFSET $v";
+                    $query_parameters[2] = " OFFSET $v";
                     break;
             }
         }
-        return $query_parameters;
+        ksort($query_parameters);
+        return implode($query_parameters);
     }
 }

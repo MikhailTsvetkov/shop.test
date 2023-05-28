@@ -1,3 +1,6 @@
+html, body {
+  background: #6c757d;
+}
 .container {
   max-width: 960px;
 }
@@ -7,6 +10,9 @@
 }
 .card-img-fixed {
   max-width: 260px;
+}
+.testimonials>.card>hr:last-child {
+  display: none;
 }
 
 @media (max-width: 700px) {

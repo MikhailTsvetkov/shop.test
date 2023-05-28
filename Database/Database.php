@@ -21,4 +21,14 @@ abstract class Database
         return $this->dbh;
     }
 
+    public function get_inserted($table)
+    {
+        if ($id=$this->dbh->lastInsertId()) {
+            $stmt = $this->dbh->prepare("SELECT * FROM $table WHERE id=$id");
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_OBJ);
+        }
+        return false;
+    }
+
 }

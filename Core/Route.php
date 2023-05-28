@@ -40,6 +40,18 @@ class Route
         }
     }
 
+    public static function post(string $uri, string $controller, string $action): void
+    {
+        if ($_SERVER['REQUEST_METHOD']=='POST') {
+            $route = self::getInstance($controller, $action);
+
+            // Проверяем uri и если есть совпадение, отправляем данные на обработку контроллеру
+            if (self::$instance->checkUri($uri)) {
+                $route->start();
+            }
+        }
+    }
+
     private function checkUri(string $route_uri): bool
     {
         // Получаем $request_uri из $_SERVER['REQUEST_URI'], отбрасывая GET-параметры
@@ -80,7 +92,6 @@ class Route
         // Создаём экземпляр контроллера
         $class = $this->controller;
         $controller = new $class();
-        $controller->set_vars($this->vars);
 
         // Если экшен не существует - 404
         if (!is_callable(array($controller, $this->action))) {
@@ -88,6 +99,6 @@ class Route
         }
 
         // Выполняем экшен
-        die ($controller->{$this->action}());
+        die ($controller->{$this->action}(...$this->vars));
     }
 }

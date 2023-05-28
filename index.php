@@ -3,6 +3,7 @@
 ini_set('display_errors', 1);
 
 use Controller\ProductController;
+use Controller\TestimonialController;
 use Core\Env;
 use Core\Route;
 
@@ -27,3 +28,4 @@ $_APP_ENV = new Env();
 Route::get('/', ProductController::class);
 Route::get('/products', ProductController::class);
 Route::get('/products/$id', ProductController::class, 'show');
+Route::post('/testimonial/add', TestimonialController::class, 'store');
