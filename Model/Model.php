@@ -60,7 +60,7 @@ abstract class Model
         $fields = $this->fieldsTable($fields);
 
         // Получаем строку, содержащую список полей
-        $queryFields = implode(',', array_flip($fields));
+        $queryFields = implode(',', array_keys($fields));
 
         // Получаем список параметров для строки запроса
         $queryPlace = ':'.str_replace(',', ',:', $queryFields);
