@@ -18,13 +18,4 @@ class Product extends Model
         $this->query("SELECT * FROM {$this->table} WHERE id=?", $id);
         return $this->fetchOne();
     }
-
-    // Получение всех товаров
-    public function getAll(array $options=[])
-    {
-        $query_parameters = $this->getQueryOptions($options);
-        $this->query("SELECT * FROM {$this->table} $query_parameters");
-        $rows = $this->getAllRows();
-        return $rows ?: [];
-    }
 }

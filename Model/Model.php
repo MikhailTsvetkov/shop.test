@@ -27,7 +27,7 @@ abstract class Model
         // Объект PDO
         $dbClassName = 'Database\\'.ucfirst(strtolower(env('DB_CONNECTION')));
         $this->dbObj = new $dbClassName;
-        $this->db = $this->dbObj->get();
+        $this->db = $this->dbObj->connect();
 
         // Имя таблицы
         $reflect = new ReflectionClass($this);
@@ -50,6 +50,14 @@ abstract class Model
     {
         // Получаем поля, которые нужно записать в бд
         return array_intersect_key($fields, array_flip($this->fillable));
+    }
+
+    public function getAll(array $options=[])
+    {
+        $query_parameters = $this->getQueryOptions($options);
+        $this->query("SELECT * FROM {$this->table} $query_parameters");
+        $rows = $this->getAllRows();
+        return $rows ?: [];
     }
 
 
@@ -137,16 +145,19 @@ abstract class Model
         $query_parameters = [];
         foreach ($options as $k=>$v) {
             switch (strtolower($k)) {
+                case 'where':
+                    $query_parameters[0] = " WHERE {$v[0]}{$v[1]}{$v[2]}";
+                    break;
                 case 'orderby':
                     $direction = strtoupper($v[1]);
                     $direction = ($direction=='DESC') ? $direction : 'ASC';
-                    $query_parameters[0] = " ORDER BY {$v[0]} $direction";
+                    $query_parameters[1] = " ORDER BY {$v[0]} $direction";
                     break;
                 case 'limit':
-                    $query_parameters[1] = " LIMIT $v";
+                    $query_parameters[2] = " LIMIT $v";
                     break;
                 case 'offset':
-                    $query_parameters[2] = " OFFSET $v";
+                    $query_parameters[3] = " OFFSET $v";
                     break;
             }
         }

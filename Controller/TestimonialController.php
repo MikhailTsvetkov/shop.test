@@ -18,7 +18,7 @@ class TestimonialController extends Controller
     public function index()
     {
         $testimonial = new Testimonial();
-        return $testimonial->getAll($this->productId, ['limit'=>5, 'orderby'=>['created_at', 'desc']]);
+        return $testimonial->getAll(['where'=>['product_id', '=', $this->productId], 'limit'=>5, 'orderby'=>['created_at', 'desc']]);
     }
 
     // Добавление отзыва

@@ -18,13 +18,4 @@ class Testimonial extends Model
        'email',
        'message',
     ];
-
-    // Получение отзывов для товара
-    public function getAll(int $productId, array $options=[])
-    {
-        $query_parameters = $this->getQueryOptions($options);
-        $this->query("SELECT * FROM {$this->table} WHERE product_id=? $query_parameters", $productId);
-        $rows = $this->getAllRows();
-        return $rows ?: [];
-    }
 }

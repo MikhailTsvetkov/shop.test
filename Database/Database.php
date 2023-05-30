@@ -10,10 +10,15 @@ abstract class Database
 
     public function __construct()
     {
+    }
+
+    public function connect(): ?PDO
+    {
         $this->dbh = new PDO(
             'mysql:host='.env('DB_HOST').';port='.env('DB_PORT').';dbname='.env('DB_DATABASE'),
             env('DB_USERNAME'), env('DB_PASSWORD')
         );
+        return $this->dbh;
     }
 
     public function get()
