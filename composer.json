@@ -3,5 +3,10 @@
         "cijic/phpmorphy": "^0.3.3",
       "ext-pdo": "*",
         "rakit/validation": "^1.4"
+    },
+    "autoload": {
+      "psr-4": {
+        "": ""
+      }
     }
 }
