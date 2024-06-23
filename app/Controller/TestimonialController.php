@@ -1,9 +1,9 @@
 <?php
 
-namespace Controller;
+namespace App\Controller;
 
+use App\Model\Testimonial;
 use Core\Request;
-use Model\Testimonial;
 
 class TestimonialController extends Controller
 {

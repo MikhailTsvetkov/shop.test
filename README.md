@@ -1,17 +1,13 @@
 ## Требования
 
-* PHP 8.1^
-* PDO Mysql
-* Composer для добавления библиотек phpmorphy и validation
-* Mysql 5.7 или выше
-* Модуль apache mod_rewrite
+* Docker
 
 ## Развертывание
 
-#### Установка зависимостей
+#### Запуск Docker compose
 
 ```
-composer install
+docker compose up -d
 ```
 
 #### Создание базы данных
@@ -24,7 +20,7 @@ composer install
 ```
 cp .env.example .env
 ```
-и внесите настройки вашей базы данных в файл .env.
+Параметры подключения к бд уже настроены для контейнера mysql.
 
 ## Описание задания
 

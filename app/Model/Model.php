@@ -1,9 +1,9 @@
 <?php
 
-namespace Model;
+namespace App\Model;
 
 use cijic\phpMorphy\Morphy;
-use Database\Database;
+use Core\Database\Database;
 use PDO;
 use PDOException;
 use ReflectionClass;
@@ -26,7 +26,7 @@ abstract class Model
     public function __construct()
     {
         // Объект PDO
-        $dbClassName = 'Database\\'.ucfirst(strtolower(env('DB_CONNECTION')));
+        $dbClassName = 'Core\\Database\\'.ucfirst(strtolower(env('DB_CONNECTION')));
         $this->dbObj = new $dbClassName;
         $this->db = $this->dbObj->connect();
 

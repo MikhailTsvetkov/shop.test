@@ -1,8 +1,6 @@
 <?php
 
-namespace Database;
-
-use PDO;
+namespace Core\Database;
 
 final class Mysql extends Database
 {

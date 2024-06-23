@@ -7,11 +7,11 @@
     <meta name="description" content="">
     <title><?=$title?></title>
 
-    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/resources/assets/css/bootstrap.min.css" rel="stylesheet">
 
 
     <!-- Custom styles for this template -->
-    <link href="/assets/css/styles.css" rel="stylesheet">
+    <link href="/resources/assets/css/styles.css" rel="stylesheet">
 </head>
 <body>
 

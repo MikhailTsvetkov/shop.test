@@ -9,7 +9,7 @@ class View
 
     public function __construct(string $view, array $vars=[])
     {
-        $this->view = 'View' . DIRECTORY_SEPARATOR . trim(str_replace('.', DIRECTORY_SEPARATOR, $view)) . '.php';
+        $this->view = 'resources' . DIRECTORY_SEPARATOR . 'views' . DIRECTORY_SEPARATOR . trim(str_replace('.', DIRECTORY_SEPARATOR, $view)) . '.php';
         $this->vars = $vars;
 
         // Проверка существования файла, иначе 404
