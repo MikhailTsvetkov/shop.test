@@ -4,6 +4,7 @@ namespace Core;
 
 use Rakit\Validation\Validator;
 
+#[\AllowDynamicProperties]
 class Request
 {
     public array $requestData;

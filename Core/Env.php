@@ -3,7 +3,7 @@
 namespace Core;
 
 use Exception;
-
+#[\AllowDynamicProperties]
 class Env
 {
     /**

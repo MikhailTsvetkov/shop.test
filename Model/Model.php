@@ -9,6 +9,7 @@ use PDOException;
 use ReflectionClass;
 use ReflectionException;
 
+#[\AllowDynamicProperties]
 abstract class Model
 {
 

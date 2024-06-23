@@ -1,0 +1,73 @@
+services:
+  mysql:
+    image: mysql:latest
+    container_name: shoptest_mysql
+    restart: on-failure
+    ports:
+      - '3306:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=project
+      - MYSQL_USER=project
+      - MYSQL_PASSWORD=project
+    volumes:
+      - ./Docker/mysql:/var/lib/mysql
+
+  redis:
+    image: redis:latest
+    container_name: shoptest_redis
+    restart: on-failure
+    command: redis-server
+    volumes:
+      - redis:/var/lib/redis
+      - redis-config:/usr/local/etc/redis/redis.conf
+    ports:
+      - 6379:6379
+
+  php:
+    build:
+      context: ./Docker/php
+      target: dev
+      args:
+        - USER_ID
+        - GROUP_ID
+    container_name: shoptest_php
+    restart: on-failure
+    environment:
+      APP_ENV: production
+    volumes:
+      - ./:/var/www/shoptest
+      - ./Docker/mysql:/var/lib/mysql
+      - ./vendor:/var/www/shoptest/vendor
+    working_dir: /var/www/shoptest/
+
+  nginx:
+    image: nginx:latest
+    container_name: shoptest_nginx
+    restart: on-failure
+    depends_on:
+      - php
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Docker/nginx/vhosts:/etc/nginx/conf.d
+      - ./Docker/nginx/logs:/var/log/nginx
+      - ./:/var/www/shoptest/
+    working_dir: /var/www/shoptest/
+
+  composer:
+    image: composer:latest
+    container_name: shoptest_composer
+    restart: no
+    depends_on:
+      - php
+    working_dir: /var/www/shoptest/
+    command: sh -c "composer install"
+    volumes:
+      - ./:/var/www/shoptest
+      - ./vendor:/var/www/shoptest/vendor
+
+volumes:
+  redis:
+  redis-config:
