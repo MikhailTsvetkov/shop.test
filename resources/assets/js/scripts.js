@@ -1,4 +1,4 @@
-document.ready(function () {
+$(document).ready(function () {
     // Показ формы отправки отзыва
     $(document).on('click', '#testimonial-open', function () {
         $('#testimonial-form').slideDown();
